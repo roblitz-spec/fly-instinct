@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fly-instinct"
-version = "0.2.0"
+version = "0.2.1"
 description = "Instinct Engine: a frozen, non-learning 'instinct' signal source driven by a real fruit-fly (MaleCNS) connectome"
 readme = "README.md"
 requires-python = ">=3.9"
