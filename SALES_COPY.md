@@ -1,12 +1,12 @@
 # SALES_COPY.md · 「即用完整包」上架文案
 
-> 用途：爱发电 / Gumroad / 知乎 / 公众号 上架与引流文案。
+> 用途：Gumroad / 知乎 / 公众号 上架与引流文案。
 > 原则：**不夸大**（不吹成“果蝇大脑/有意识/能学习”），把“诚实边界”当**信任状**；
 > 把不足转成正面表述（“不学习” → “纯本地、确定性、可复现”）。
 
 ---
 
-## 一、中文文案（爱发电 / 知乎 / 公众号 直接贴）
+## 一、中文文案（知乎 / 公众号 直接贴）
 
 ### 标题（任选）
 - **我把果蝇大脑下到了本地——它比随机数更像“活的”**
@@ -49,14 +49,13 @@
 - 科普 demo / 教学（展示“真实连接组 + 非学习动力学”）
 
 ### 定价
-- **国内（爱发电）：¥39**（一次性，含完整连接组 + 全部预设 + 商业授权 + 一次支持）
-- **海外（Gumroad）：$5.9**
+- **Gumroad：$6.9**（一次性，含完整连接组 + 全部预设 + 商业授权 + 一次支持）
 
 > 定价说明：本项目是 open-core，免费 PyPI 已含完整连接组下载工具、4 个预设和全部代码（MIT 本可闭源商用），付费包真正多出的是"帮你下好的 1.05GB 数据 + 盖章商业授权书 + 一次支持"。定价卡在不破坏行情的最低线（冲动下单不心疼、又不像赠品）。
 
 ### 交付
-- 网盘链接（百度网盘 / 阿里云盘）自动发送完整包 zip；
-- 或 GitHub 仓库 + 本包商业授权（购买后邮件发授权编号）。
+- Gumroad 购买后自动发送下载链接（完整包 zip，含 1.05GB 数据 + 代码 + 商业授权）；
+- 商业授权编号随包附带（`LICENSE_COMMERCIAL.md`）。
 
 ---
 
@@ -104,7 +103,7 @@ non-trivial, and non-learning.
 - Science-communication demos
 
 ### Price
-**$5.9** (one-time: full connectome + all presets + commercial license + one round of support)
+**$6.9** (one-time: full connectome + all presets + commercial license + one round of support)
 
 > This is an open-core project — the free PyPI package already includes the full-connectome download tool, all presets, and all code (MIT, already usable in closed-source products). The paid package adds the pre-downloaded 1.05 GB data + a signed commercial license + one round of support. Priced at the lowest point that still signals real value rather than a giveaway.
 

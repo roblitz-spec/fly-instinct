@@ -1,4 +1,4 @@
-# 上架操作教程（爱发电 + Gumroad）
+# 上架操作教程（Gumroad）
 
 > 本文精确到"点哪个按钮、填什么字段"，照做即可。
 > 前提：付费 zip 包已打好（见下文"打包"节），主图 `instinct_poc_real.png` 已准备。
@@ -82,49 +82,7 @@ out = run_preset("escape", edges_path="data/...feather", use_real=True)
 
 ---
 
-## 二、爱发电上架（国内，¥39）
-
-### Step 1：注册 & 进入产品管理
-
-1. 打开 https://afdian.com → 右上角「登录」→ 手机号注册
-2. 登录后点右上角头像 → **「创作者中心」**
-3. 左侧菜单 → **「产品」** → 点 **「创建产品」**
-
-### Step 2：填写产品信息
-
-| 字段 | 填什么 |
-|---|---|
-| 产品名称 | `Fly-Instinct 果蝇连接组"本能引擎"完整包` |
-| 产品副标题 | 真实果蝇大脑连接组 · 不学习 · 纯本地 · 商业授权 |
-| 产品类型 | **数字产品**（不是"支持/赞赏"） |
-| 定价 | ¥39（一次性买断） |
-| 产品描述 | 直接贴 `SALES_COPY.md` 第一节"中文文案"的"这是什么 + 卖点 + 包含什么"段 |
-| 封面图 | 上传 `instinct_poc_real.png`（真实数据三方对比图） |
-| 补充图片 | 可再加 `instinct_poc.png` |
-
-### Step 3：设置交付方式
-
-- 交付类型选 **「网盘链接」**（爱发电支持百度网盘/阿里云盘/腾讯微云）
-- 把 `fly-instinct-full-0.2.0.zip`（1.1GB）传到你的网盘
-- **注意**：网盘文件需设为"链接分享"（非"仅密码"），购买后自动发链接+提取码
-- 如果 1.1GB 超网盘免费分享限制：
-  - 阿里云盘：个人版 20GB 够用
-  - 百度网盘：普通用户限速但能下；或用"转存"方式
-
-### Step 4：发布
-
-- 检查预览页 → 点 **「发布」**
-- 发布后得到产品链接：`https://afdian.com/item/xxxxx`
-- 把这个链接填回 GitHub README 顶部的付费入口占位
-
-### 收款设置
-
-- 创作者中心 → **「收款账户」** → 绑定银行卡/支付宝
-- 爱发电抽成 6%（¥39 → 你收 ¥36.66）
-
----
-
-## 三、Gumroad 上架（海外，$5.9）
+## 二、Gumroad 上架（$6.9）
 
 ### Step 1：注册
 
@@ -140,7 +98,7 @@ out = run_preset("escape", edges_path="data/...feather", use_real=True)
 |---|---|
 | Product name | `Fly-Instinct — Full Connectome Package` |
 | Type | **Digital product** |
-| Price | $5.90（固定价；也可勾 "Pay what you want" 最低 $5.90） |
+| Price | $6.90（固定价；也可勾 "Pay what you want" 最低 $6.90） |
 | Description | 贴 `SALES_COPY.md` 第二节"English Copy"全文 |
 | Cover image | 上传 `instinct_poc_real.png`（1200×630 或更大） |
 | Files | 上传 `fly-instinct-full-0.2.0.zip` |
@@ -153,7 +111,7 @@ out = run_preset("escape", edges_path="data/...feather", use_real=True)
 
 ### Step 4：设置 & 发布
 
-- **Pricing**：$5.90 fixed
+- **Pricing**：$6.90 fixed
 - **Visibility**：Public（公开可搜索）
 - **URL slug**：`fly-instinct-full`（你的产品链接 = `gumroad.com/l/fly-instinct-full`）
 - 点 **Publish**
@@ -162,18 +120,18 @@ out = run_preset("escape", edges_path="data/...feather", use_real=True)
 
 - Gumroad 是 **Merchant of Record**（销售税它代扣，你不用处理各国 VAT/GST）
 - 左侧 **Payouts** → 绑定 PayPal 或银行（PayPal 最简单）
-- Gumroad 抽成 10% + $0.50/单（$5.90 → 你收约 $4.81）
+- Gumroad 抽成 10% + $0.50/单（$6.90 → 你收约 $5.71）
 - 首次打款有 7 天等待期（防欺诈）
 
 ---
 
-## 四、上架后回填链接
+## 三、上架后回填链接
 
-两个产品都发布后：
+产品发布后：
 
 1. **GitHub README.md** 顶部：
    ```markdown
-   > 💎 完整包 → [爱发电 ¥39](https://afdian.com/item/xxx) | [Gumroad $5.9](https://gumroad.com/l/fly-instinct-full)
+   > 💎 完整包 → [Gumroad $6.9](https://gumroad.com/l/fly-instinct-full)
    ```
 2. **PyPI 描述**（`pyproject.toml` 的 `description` 或 `readme`）里也加一行
 3. commit + push：
@@ -185,7 +143,7 @@ out = run_preset("escape", edges_path="data/...feather", use_real=True)
 
 ---
 
-## 五、上架后第一周动作
+## 四、上架后第一周动作
 
 1. **知乎/公众号发一篇**（`CONTENT_zhihu.md` 已备好）→ 结尾带 GitHub 链接
 2. **GitHub 仓库 About** 加一句英文描述 + Topics: `connectome, neuroscience, game-ai, generative, reservoir-computing`
@@ -194,16 +152,13 @@ out = run_preset("escape", edges_path="data/...feather", use_real=True)
 
 ---
 
-## 六、常见问题
-
-**Q: 1.1GB 文件在爱发电能自动发吗？**
-A: 爱发电数字产品支持"网盘链接"交付（不是直接传文件）。你上传到阿里云盘/百度网盘后，把分享链接填进产品交付设置，购买后自动发给买家。
+## 五、常见问题
 
 **Q: Gumroad 能传 1.1GB 吗？**
 A: 能。Gumroad 免费账户单文件上限 2GB。上传走 HTTPS 直传，速度取决于你的上行。
 
 **Q: 需要交税吗？**
-A: Gumroad 是 MoR（Merchant of Record），海外销售税它代扣代缴，你收的是税后金额。国内爱发电走微信/支付宝，个人创作者小额（年 < 10 万）通常不追税。
+A: Gumroad 是 MoR（Merchant of Record），海外销售税它代扣代缴，你收的是税后金额，不用自己处理各国 VAT/GST。
 
 **Q: 数据是 CC-BY 的，我收费卖合法吗？**
 A: 合法。CC-BY 允许"收费再分发"（只要署名 + 同样 CC-BY 许可）。你卖的不是数据本身（免费可得），是"下好 + 接好 + 商业授权 + 支持"的工程服务。

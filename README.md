@@ -6,7 +6,7 @@
 > 它**不是智能、不是大脑、没有意识、不会学习**。
 
 > 💎 想要**下好、接好、调好**的完整 1.05GB 连接组 + 4 个预调“本能”预设 + 商业授权？
-> → [爱发电（国内，¥39）](链接待填) ｜ [Gumroad（海外，$5.9）](链接待填)
+> → [Gumroad（$6.9）](链接待填)
 > （免费层 = 本仓库 + `pip install fly-instinct`，含 25MB 子集 + 全部代码；付费层 = 完整连接组即用包）
 
 ---
@@ -37,7 +37,7 @@ fly-instinct/
 ├── MODEL.md                # 模型说明（架构/数据出处/完整连接组接入）
 ├── LICENSE.md              # 许可与署名（数据 CC-BY 4.0 + 代码 MIT）
 ├── LICENSE_COMMERCIAL.md   # 商业使用授权书（随付费完整包提供）
-├── SALES_COPY.md           # 上架文案（爱发电/Gumroad/知乎/公众号）
+├── SALES_COPY.md           # 上架文案（Gumroad/知乎/公众号）
 ├── PUBLISH.md              # 发布清单（署名/合规/商用边界）
 └── PUBLISH_STEPS.md        # 逐步发布操作（GitHub/PyPI/收费渠道/内容）
 ```

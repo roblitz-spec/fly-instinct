@@ -1,6 +1,6 @@
 # 发布操作清单（逐步版）
 
-> 定位：**MIT 开源 + open-core 收费**。免费层（GitHub/PyPI）是流量入口和信任状；收费层（爱发电/Gumroad）卖"下好调好的即用包 + 商业授权 + 持续更新"。
+> 定位：**MIT 开源 + open-core 收费**。免费层（GitHub/PyPI）是流量入口和信任状；收费层（Gumroad）卖"下好调好的即用包 + 商业授权 + 持续更新"。
 > 本清单按顺序执行，每一步都有具体命令。预计手动操作总耗时约 40 分钟（不含内容创作）。
 
 ---
@@ -11,8 +11,7 @@
 |---|---|---|
 | GitHub | https://github.com/signup | 代码主仓库（信任状） |
 | PyPI | https://pypi.org/account/register/ | `pip install fly-instinct` 入口 |
-| 爱发电 | https://afdian.com | 国内收费渠道（抽成 6%） |
-| Gumroad | https://gumroad.com | 海外收费渠道（直链 10%+$0.50，平台代扣销售税） |
+| Gumroad | https://gumroad.com | 收费渠道（直链 10%+$0.50，平台代扣销售税） |
 
 本机工具：
 
@@ -88,16 +87,9 @@ python examples/poc_real.py   # 需要把 examples 从仓库拷一份，或直�
 3. 商业使用授权书（企业客户可闭源集成、不强制开源其代码）
 4. 中英文档 + 一次问题支持
 
-**爱发电（国内）**：
+**Gumroad**：
 
-1. 注册 → 创建"产品"（不是"支持"），定价 **¥39**（open-core 下不破坏行情的最低线，冲动下单不心疼、又不像赠品）
-2. 产品描述用 LICENSE.md 的署名块 + "这是什么/不是什么"（照抄 MODEL.md 的诚实边界段）
-3. 交付方式：网盘链接（百度网盘/阿里云盘）发完整包
-4. 页面放 `instinct_poc_real.png` 主图
-
-**Gumroad（海外）**：
-
-1. 创建 Product → Digital，定价 **$5.9**
+1. 创建 Product → Digital，定价 **$6.9**
 2. 描述用 README 英文版要点 + 诚实边界
 3. 交付：zip（完整包）自动发下载链接
 4. 注意 Gumroad 是 Merchant of Record，销售税它代扣，你不用处理各国税务
@@ -106,11 +98,11 @@ python examples/poc_real.py   # 需要把 examples 从仓库拷一份，或直�
 
 ## 第 4 步：免费仓库 README 顶部加付费入口
 
-在 README.md 的标题下加一行（爱发电/Gumroad 链接创建后替换）：
+在 README.md 的标题下加一行（Gumroad 链接创建后替换）：
 
 ```markdown
 > 想要**下好、接好、调好**的完整 1.05GB 连接组 + 商业授权？
-> → [爱发电（国内，¥39）](链接) | [Gumroad（海外，$5.9）](链接)
+> → [Gumroad（$6.9）](链接)
 ```
 
 ---
@@ -141,5 +133,5 @@ python examples/poc_real.py   # 需要把 examples 从仓库拷一份，或直�
 
 - [ ] GitHub 仓库公开可访问，README 带付费入口
 - [ ] `pip install fly-instinct` 在全新 venv 里可安装可运行
-- [ ] 爱发电 + Gumroad 各有一个上架产品
+- [ ] Gumroad 有一个上架产品
 - [ ] 至少发了一篇带 GitHub 链接的科普内容
