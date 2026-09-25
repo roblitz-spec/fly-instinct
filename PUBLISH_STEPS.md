@@ -90,14 +90,14 @@ python examples/poc_real.py   # 需要把 examples 从仓库拷一份，或直�
 
 **爱发电（国内）**：
 
-1. 注册 → 创建"产品"（不是"支持"），定价建议 **¥49–99**
+1. 注册 → 创建"产品"（不是"支持"），定价 **¥39**（open-core 下不破坏行情的最低线，冲动下单不心疼、又不像赠品）
 2. 产品描述用 LICENSE.md 的署名块 + "这是什么/不是什么"（照抄 MODEL.md 的诚实边界段）
 3. 交付方式：网盘链接（百度网盘/阿里云盘）发完整包
 4. 页面放 `instinct_poc_real.png` 主图
 
 **Gumroad（海外）**：
 
-1. 创建 Product → Digital，定价 **$19–29**
+1. 创建 Product → Digital，定价 **$5.9**
 2. 描述用 README 英文版要点 + 诚实边界
 3. 交付：zip（完整包）自动发下载链接
 4. 注意 Gumroad 是 Merchant of Record，销售税它代扣，你不用处理各国税务
@@ -110,7 +110,7 @@ python examples/poc_real.py   # 需要把 examples 从仓库拷一份，或直�
 
 ```markdown
 > 想要**下好、接好、调好**的完整 1.05GB 连接组 + 商业授权？
-> → [爱发电（国内，¥49）](链接) | [Gumroad（海外，$19）](链接)
+> → [爱发电（国内，¥39）](链接) | [Gumroad（海外，$5.9）](链接)
 ```
 
 ---

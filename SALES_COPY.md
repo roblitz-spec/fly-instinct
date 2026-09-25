@@ -49,8 +49,10 @@
 - 科普 demo / 教学（展示“真实连接组 + 非学习动力学”）
 
 ### 定价
-- **国内（爱发电）：¥99**（一次性，含完整连接组 + 全部预设 + 商业授权 + 一次支持）
-- **海外（Gumroad）：$29**
+- **国内（爱发电）：¥39**（一次性，含完整连接组 + 全部预设 + 商业授权 + 一次支持）
+- **海外（Gumroad）：$5.9**
+
+> 定价说明：本项目是 open-core，免费 PyPI 已含完整连接组下载工具、4 个预设和全部代码（MIT 本可闭源商用），付费包真正多出的是"帮你下好的 1.05GB 数据 + 盖章商业授权书 + 一次支持"。定价卡在不破坏行情的最低线（冲动下单不心疼、又不像赠品）。
 
 ### 交付
 - 网盘链接（百度网盘 / 阿里云盘）自动发送完整包 zip；
@@ -102,7 +104,9 @@ non-trivial, and non-learning.
 - Science-communication demos
 
 ### Price
-**$29** (one-time: full connectome + all presets + commercial license + one round of support)
+**$5.9** (one-time: full connectome + all presets + commercial license + one round of support)
+
+> This is an open-core project — the free PyPI package already includes the full-connectome download tool, all presets, and all code (MIT, already usable in closed-source products). The paid package adds the pre-downloaded 1.05 GB data + a signed commercial license + one round of support. Priced at the lowest point that still signals real value rather than a giveaway.
 
 ### Data attribution (required, CC-BY 4.0)
 > The fruit-fly connectome data is from **MaleCNS v1.0** (Janelia Research Campus / HHMI),
