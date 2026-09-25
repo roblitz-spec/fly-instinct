@@ -64,7 +64,7 @@ python -m twine upload dist/*
 
 API token 获取：登录 PyPI → 头像 → **Account settings → API tokens → Add API token**，权限选 "Entire account" 或针对 `fly-instinct` 项目。
 
-**上传前最后一道检查**：`pyproject.toml` 的作者与 Homepage 已填实（Zhang Rui / roblitz）。注意 PyPI 上传后改元数据需要发新版本（0.1.1+），所以确认无误再传。
+**上传前最后一道检查**：`pyproject.toml` 的作者与 Homepage 已填实（作者 roblitz / Homepage 指向 roblitz-spec 仓库）。注意 PyPI 上传后改元数据需要发新版本（0.1.1+），所以确认无误再传。
 
 **上传后验证**（新 venv 里，模拟真实用户）：
 

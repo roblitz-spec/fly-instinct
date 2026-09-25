@@ -4,27 +4,34 @@
 
 ```
 fly-instinct/
-├── fly_instinct.py          引擎
-├── malecns_loader.py        数据加载
-├── poc_demo.py              替身版 PoC（无数据依赖）
-├── poc_real.py              真实数据 PoC
-├── instinct_poc.png         替身版对比图
-├── instinct_poc_real.png    真实数据对比图（对外展示主图）
-├── data/                    真实 MaleCNS 子集（~25 MB，CC-BY 4.0）
+├── fly_instinct/            包
+│   ├── __init__.py          导出 FlyInstinct
+│   ├── __main__.py          CLI 入口（python -m fly_instinct）
+│   ├── engine.py            引擎核心（LIF + 冻结权重）
+│   ├── loader.py            数据加载（CSV → scipy CSR）
+│   └── datafetch.py         数据下载 CLI
+├── examples/
+│   ├── poc_demo.py          替身版 PoC（无数据依赖）
+│   └── poc_real.py          真实数据 PoC + 三方对比出图
+├── data/                    真实 MaleCNS 子集（~25 MB，CC-BY 4.0，.gitignore 排除）
 │   ├── edges.csv
 │   ├── annotations.csv
 │   └── neurotransmitters.csv
 ├── README.md                操作文档
 ├── MODEL.md                 模型说明
-├── LICENSE.md               许可与署名
-└── PUBLISH.md               本文件
+├── LICENSE.md               许可与署名（MIT，署名 roblitz）
+├── pyproject.toml           包配置（author: roblitz）
+├── instinct_poc.png         替身版对比图
+├── instinct_poc_real.png    真实数据对比图（对外展示主图）
+├── PUBLISH.md               发布清单（本文件）
+└── PUBLISH_STEPS.md         逐步发布操作
 ```
 
 ## 1. 发布前 checklist（逐项打勾）
 
 - [ ] **署名到位**：README/MODEL/LICENSE 均含 MaleCNS v1.0 + Janelia + CC-BY 4.0 + 子集出处（见 LICENSE.md A 部分）。
 - [ ] **数据保持 CC-BY 4.0**：未对 `data/` 施加“禁止再分发/禁止商用”等更严条款。
-- [ ] **代码授权已选定**：MIT（开源）或专有（闭源卖产品）——二选一并写入 LICENSE.md B 部分，替换 `<你的名字/团队>`。
+- [x] **代码授权已选定**：MIT（开源），署名 roblitz，已写入 LICENSE.md B 部分。
 - [ ] **无夸大措辞**：全篇无“果蝇大脑 / 有意识 / 能学习 / AGI”；统一用“基于真实连接组的本能式反应源 / 有机扰动源”。
 - [ ] **完整性**：`data/` 三个 CSV 的 sha256 与 MODEL.md 记录一致。
 - [ ] **可复现**：干净环境 `pip install numpy scipy matplotlib` 后 `python poc_real.py` 能跑出图。
