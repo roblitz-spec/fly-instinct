@@ -27,7 +27,7 @@ from .presets import list_presets, load_preset, make_stimulus, run_preset
 from .fullconnectome import (from_full, download_full, feather_to_csv,
                              FULL_URLS, FEATHER_NAME)
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 __all__ = [
     "FlyInstinct", "load_malecns", "fetch_data",
     "DATA_URLS", "EXPECTED_SIZES",
