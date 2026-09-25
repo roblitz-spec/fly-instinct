@@ -1,0 +1,13 @@
+# 构建产物
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.pyc
+
+# 本地测试安装目录
+.flytest_install/
+
+# 数据不进 git（25MB，用 fetch-data 下载）
+data/
+!data/.gitkeep
