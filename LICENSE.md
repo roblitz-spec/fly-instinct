@@ -23,7 +23,7 @@ CC-BY 4.0 **要求**：署名；且**不得**施加比 CC-BY 更严格的限制�
 
 ## B. 本包代码 —— 你的衍生作品（可自定授权）
 
-`fly_instinct.py`、`malecns_loader.py`、`poc_*.py` 是**独立编写的衍生代码**，
+`fly_instinct/` 包（`engine.py`、`loader.py`、`datafetch.py`、`__init__.py`、`__main__.py`）与 `examples/` 下的 PoC 脚本，是**独立编写的衍生代码**，
 **你可以自由选择授权方式**：
 
 - **想开源 / 攒口碑 / 招人**：用 **MIT**（最宽松，允许商用、闭源集成）。
@@ -35,7 +35,7 @@ CC-BY 4.0 **要求**：署名；且**不得**施加比 CC-BY 更严格的限制�
 ```
 MIT License
 
-Copyright (c) 2026 <你的名字/团队>
+Copyright (c) 2026 roblitz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -56,8 +56,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-> 把 `<你的名字/团队>` 换成你的署名即可。若选专有许可，删掉上面的 MIT 段、
-> 换成你自己的“保留所有权利 + 使用条款”，但**保留 A 部分的数据 CC-BY 署名**。
+> 本包代码采用 **MIT**（署名 roblitz）。若日后改为专有许可，替换上面的 MIT 段即可，
+> 但**必须保留 A 部分的数据 CC-BY 4.0 署名**。
 
 ---
 

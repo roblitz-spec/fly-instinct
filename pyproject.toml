@@ -9,7 +9,7 @@ description = "Instinct Engine: a frozen, non-learning 'instinct' signal source 
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-authors = [{ name = "Zhang Rui" }]
+authors = [{ name = "roblitz" }]
 keywords = ["connectome", "fruit-fly", "neuroscience",
             "reservoir-computing", "spiking-neurons", "generative"]
 classifiers = [
