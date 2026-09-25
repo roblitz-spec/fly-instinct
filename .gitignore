@@ -11,3 +11,9 @@ __pycache__/
 # 数据不进 git（25MB，用 fetch-data 下载）
 data/
 !data/.gitkeep
+
+# 完整连接组数据（1.1GB，付费包内含）
+data_full/
+
+# 付费产品打包产物（0.81GB zip）
+package/
