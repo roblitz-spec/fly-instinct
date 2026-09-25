@@ -1,0 +1,23 @@
+{
+  "id": "startle",
+  "label_zh": "惊跳",
+  "label_en": "Startle",
+  "description": "短时强刺激 → 尖峰反应。仅 5 个时间步的尖锐刺激，看网络给出一个快速、自衰减的惊跳式反应。",
+  "stimulus": {
+    "type": "pulse",
+    "T": 200,
+    "onset": 100,
+    "width": 5,
+    "amplitude": 1.5
+  },
+  "engine": {
+    "seed": 13,
+    "gain": 2.0,
+    "in_neurons": 800,
+    "spectral_radius": 0.9
+  },
+  "react": {
+    "noise": 0.0,
+    "smooth": 1
+  }
+}

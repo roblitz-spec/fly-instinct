@@ -23,7 +23,18 @@ fly-instinct — 基于真实果蝇连接组的“本能引擎” (Instinct Engi
 from .engine import FlyInstinct
 from .loader import load_malecns
 from .datafetch import fetch_data, DATA_URLS, EXPECTED_SIZES
+from .presets import list_presets, load_preset, make_stimulus, run_preset
+from .fullconnectome import (from_full, download_full, feather_to_csv,
+                             FULL_URLS, FEATHER_NAME)
 
-__version__ = "0.1.0"
-__all__ = ["FlyInstinct", "load_malecns", "fetch_data",
-           "DATA_URLS", "EXPECTED_SIZES", "__version__"]
+__version__ = "0.2.0"
+__all__ = [
+    "FlyInstinct", "load_malecns", "fetch_data",
+    "DATA_URLS", "EXPECTED_SIZES",
+    # 预调“本能”预设
+    "list_presets", "load_preset", "make_stimulus", "run_preset",
+    # 完整连接组（~1.05GB）接入
+    "from_full", "download_full", "feather_to_csv",
+    "FULL_URLS", "FEATHER_NAME",
+    "__version__",
+]

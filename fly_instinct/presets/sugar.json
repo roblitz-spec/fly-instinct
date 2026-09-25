@@ -1,0 +1,23 @@
+{
+  "id": "sugar",
+  "label_zh": "趋糖",
+  "label_en": "Sugar-seeking",
+  "description": "渐近奖励 → 反应随强度爬升。奖励信号从 0 线性增强到峰值后保持，模拟靠近糖源时的逐步趋近。",
+  "stimulus": {
+    "type": "ramp",
+    "T": 240,
+    "onset": 40,
+    "duration": 80,
+    "amplitude": 1.0
+  },
+  "engine": {
+    "seed": 11,
+    "gain": 2.0,
+    "in_neurons": 800,
+    "spectral_radius": 0.9
+  },
+  "react": {
+    "noise": 0.0,
+    "smooth": 3
+  }
+}

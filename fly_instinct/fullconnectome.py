@@ -1,0 +1,188 @@
+"""
+fullconnectome.py — 接入【完整】MaleCNS v1.0 连接组（~1.05 GB feather）
+======================================================================
+
+`data/` 里的 25MB 是子集（~1 万节点，够跑够真）。本模块负责把
+**完整校对版**（~16.67 万神经元 / ~2560 万条连接）接进来：
+
+  1. download_full() : 从官方 GCS 直链下载 .feather（断点续传 + 大小校验）。
+  2. feather_to_csv() : 把 feather 转成 CSV（pre,post,weight），喂给现有 loader。
+  3. from_full()     : 下载 + 转换 + 加载一条龙，返回 FlyInstinct。
+
+数据出处（CC-BY-4.0，发布时须署名）：
+  MaleCNS v1.0, Janelia FlyEM, https://male-cns.janelia.org
+
+注意：
+  - 官方直链在 storage.googleapis.com，**中国大陆网络可能不可达**；
+    不可达时请用可达的镜像/代理下载同名文件，只要列仍是 pre/post/weight 即可。
+  - feather→CSV 需要 `pandas`（+ `pyarrow`），这是一次性转换依赖：
+        pip install pandas pyarrow
+  - 完整版稀疏矩阵约 2560 万非零元，加载后内存数百 MB，建议内存 ≥ 8 GB。
+
+用法（CLI）：
+  python -m fly_instinct get-full --out data_full          # 只下载
+  python -m fly_instinct get-full --out data_full --to-csv # 下载并转 CSV
+  python -m fly_instinct get-full --out data_full --run    # 下载+转+跑 escape 预设
+
+用法（代码）：
+  from fly_instinct import from_full
+  fly = from_full("data_full/connectome-....feather",
+                  ann_feather=".../annotations-....feather",
+                  nt_feather=".../neurotransmitters-....feather")
+  reaction, spikes = fly.react(stimulus)
+"""
+from __future__ import annotations
+import argparse
+import os
+import sys
+import urllib.request
+
+# 官方 GCS 直链（CC-BY 4.0）。文件名以官方下载页为准。
+FULL_URLS = {
+    "edges": ("https://storage.googleapis.com/flyem-male-cns/v1.0/"
+              "connectome-data/flat-connectome/"
+              "connectome-weights-male-cns-v1.0-minconf-0.5.feather"),
+}
+# 完整版体积约 1.05 GB；这里给个下限做粗校验（>=0.9GB 视为下载完整量级），
+# 精确字节数以官方文件为准，不强制等值（避免上游更新导致误判）。
+FULL_MIN_BYTES = 900_000_000
+FEATHER_NAME = "connectome-weights-male-cns-v1.0-minconf-0.5.feather"
+
+_UA = "Mozilla/5.0 (fly-instinct fullconnectome)"
+
+
+def download_full(out_dir: str, url: str = FULL_URLS["edges"],
+                  force: bool = False) -> str:
+    """
+    下载完整连接组 feather 到 out_dir（断点续传 + 量级校验）。返回文件路径。
+    """
+    os.makedirs(out_dir, exist_ok=True)
+    dest = os.path.join(out_dir, FEATHER_NAME)
+    if force and os.path.exists(dest):
+        os.remove(dest)
+    if os.path.exists(dest) and os.path.getsize(dest) >= FULL_MIN_BYTES:
+        print(f"  [skip] {FEATHER_NAME} 已存在 "
+              f"({os.path.getsize(dest)/1e9:.2f} GB)")
+        return dest
+
+    print(f"下载完整连接组 ({FEATHER_NAME}) -> {os.path.abspath(dest)}")
+    print("  来源: " + url)
+    print("  若长时间无响应：storage.googleapis.com 可能不可达，"
+          "请改用镜像/代理下载同名文件。")
+    req = urllib.request.Request(url, headers={"User-Agent": _UA})
+    start = os.path.getsize(dest) if os.path.exists(dest) else 0
+    if start > 0:
+        req.add_header("Range", f"bytes={start}-")
+        print(f"  [resume] 从 {start/1e6:.1f} MB 续传")
+
+    with urllib.request.urlopen(req, timeout=120) as resp, \
+            open(dest, "ab" if start > 0 else "wb") as f:
+        total = start + int(resp.headers.get("Content-Length") or 0)
+        got = start
+        chunk = 1024 * 1024  # 1MB
+        last = 0.0
+        import time
+        while True:
+            b = resp.read(chunk)
+            if not b:
+                break
+            f.write(b)
+            got += len(b)
+            now = time.time()
+            if total and (now - last) > 1.0:
+                pct = 100.0 * got / total
+                sys.stdout.write(f"\r  {got/1e9:.2f}/{total/1e9:.2f} GB "
+                                 f"({pct:.1f}%)")
+                sys.stdout.flush()
+                last = now
+    sys.stdout.write("\n")
+    sz = os.path.getsize(dest)
+    if sz < FULL_MIN_BYTES:
+        raise IOError(f"{dest}: 只有 {sz/1e6:.1f} MB (< {FULL_MIN_BYTES/1e6:.0f} MB)，"
+                      f"下载可能不完整，请删除后重试或检查网络。")
+    print(f"  [ok] {FEATHER_NAME} ({sz/1e9:.2f} GB)")
+    return dest
+
+
+def feather_to_csv(feather_path: str, csv_path: str) -> tuple:
+    """
+    把 .feather 连接组转成 CSV（列 pre,post,weight）。需要 pandas(+pyarrow)。
+    返回 (csv_path, 行数)。
+    """
+    try:
+        import pandas as pd
+    except ImportError:
+        raise ImportError("feather→CSV 需要 pandas 和 pyarrow："
+                          "pip install pandas pyarrow")
+    df = pd.read_feather(feather_path)
+    # 官方列名即 pre/post/weight；若列名不同，按位置取前三列兜底
+    if {"pre", "post", "weight"} <= set(df.columns):
+        df = df[["pre", "post", "weight"]]
+    else:
+        df = df.iloc[:, :3]
+        df.columns = ["pre", "post", "weight"]
+    df.to_csv(csv_path, index=False)
+    return csv_path, len(df)
+
+
+def from_full(feather_path: str, ann_feather: str | None = None,
+              nt_feather: str | None = None, out_dir: str | None = None,
+              seed: int = 7, in_neurons: int = 2000,
+              gain: float = 2.0, spectral_radius: float = 0.9):
+    """
+    从【完整】feather 连接组构建 FlyInstinct（下载已在外部完成时用本函数）。
+    自动转 CSV（缓存在 out_dir，默认 feather 同目录）再走 from_malecns。
+
+    ann_feather / nt_feather : 完整版的注释、递质 feather（可选，列同理）。
+    """
+    from . import FlyInstinct
+
+    if not os.path.exists(feather_path):
+        raise FileNotFoundError(f"找不到 feather: {feather_path}")
+    out_dir = out_dir or os.path.dirname(os.path.abspath(feather_path))
+    os.makedirs(out_dir, exist_ok=True)
+
+    def _to_csv(fe, name):
+        if not fe or not os.path.exists(fe):
+            return None
+        csv = os.path.join(out_dir, name)
+        if not os.path.exists(csv):
+            feather_to_csv(fe, csv)
+        return csv
+
+    edges_csv = _to_csv(feather_path, "full_edges.csv")
+    ann_csv = _to_csv(ann_feather, "full_annotations.csv")
+    nt_csv = _to_csv(nt_feather, "full_neurotransmitters.csv")
+
+    return FlyInstinct.from_malecns(
+        edges_csv, ann_path=ann_csv, nt_path=nt_csv,
+        seed=seed, in_neurons=in_neurons,
+        gain=gain, spectral_radius=spectral_radius)
+
+
+def main(argv=None):
+    p = argparse.ArgumentParser(
+        description="接入完整 MaleCNS v1.0 连接组 (~1.05GB feather)")
+    p.add_argument("--out", default="data_full", help="输出目录 (默认 ./data_full)")
+    p.add_argument("--force", action="store_true", help="删除已有 feather 重新下载")
+    p.add_argument("--to-csv", action="store_true", help="下载后转 CSV")
+    p.add_argument("--run", action="store_true", help="下载+转+用 escape 预设跑一次")
+    a = p.parse_args(argv)
+
+    fe = download_full(a.out, force=a.force)
+    if a.to_csv or a.run:
+        csv = os.path.join(a.out, "full_edges.csv")
+        if not os.path.exists(csv):
+            feather_to_csv(fe, csv)
+        print(f"  [ok] 转 CSV: {csv}")
+    if a.run:
+        from .presets import run_preset
+        csv = os.path.join(a.out, "full_edges.csv")
+        out = run_preset("escape", edges_path=csv, use_real=True)
+        r = out["reaction"]
+        print(f"  [run] escape 预设 @ 完整连接组: peak={r.max():.2f} "
+              f"nodes={out['meta']['n_nodes']} edges={out['meta']['n_edges']:,}")
+
+
+if __name__ == "__main__":
+    main()

@@ -5,6 +5,10 @@
 > 定位一句话：它是一个**有结构的、非学习的反应算子**，用于给“需要‘活的反应’”的项目提供信号。
 > 它**不是智能、不是大脑、没有意识、不会学习**。
 
+> 💎 想要**下好、接好、调好**的完整 1.05GB 连接组 + 4 个预调“本能”预设 + 商业授权？
+> → [爱发电（国内，¥99）](链接待填) ｜ [Gumroad（海外，$29）](链接待填)
+> （免费层 = 本仓库 + `pip install fly-instinct`，含 25MB 子集 + 全部代码；付费层 = 完整连接组即用包）
+
 ---
 
 ## 文件结构
@@ -16,7 +20,10 @@ fly-instinct/
 │   ├── engine.py           #   引擎（FlyInstinct）：冻结递归网络 + LIF 动力学
 │   ├── loader.py           #   数据加载：真实 MaleCNS 子集 -> 冻结稀疏矩阵
 │   ├── datafetch.py        #   数据下载工具（25MB 子集，断点续传+校验）
-│   └── __main__.py         #   python -m fly_instinct fetch-data 入口
+│   ├── presets.py          #   预调“本能”预设（逃避/趋糖/惊跳/探索）
+│   ├── fullconnectome.py   #   完整 1.05GB 连接组接入（下载+转换+加载）
+│   ├── presets/            #   内置预设 JSON（随包分发）
+│   └── __main__.py         #   CLI：fetch-data / get-full 入口
 ├── examples/
 │   ├── poc_demo.py         # PoC（替身网络版，150 节点，无需数据）
 │   └── poc_real.py         # PoC（真实 MaleCNS 连接组版）
@@ -28,8 +35,11 @@ fly-instinct/
 ├── instinct_poc_real.png   # 真实数据三方对比图
 ├── README.md               # 本文件（操作文档）
 ├── MODEL.md                # 模型说明（架构/数据出处/完整连接组接入）
-├── LICENSE.md              # 许可与署名
-└── PUBLISH.md              # 发布清单（署名/合规/商用边界）
+├── LICENSE.md              # 许可与署名（数据 CC-BY 4.0 + 代码 MIT）
+├── LICENSE_COMMERCIAL.md   # 商业使用授权书（随付费完整包提供）
+├── SALES_COPY.md           # 上架文案（爱发电/Gumroad/知乎/公众号）
+├── PUBLISH.md              # 发布清单（署名/合规/商用边界）
+└── PUBLISH_STEPS.md        # 逐步发布操作（GitHub/PyPI/收费渠道/内容）
 ```
 
 ---
@@ -119,9 +129,58 @@ reaction, spikes = fly.react(stimulus)
 
 ---
 
+## 预调“本能”预设（4 种开箱即用）
+
+内置 4 个预设，**换预设 = 换一种本能**（权重仍是同一个冻结网络，`react()` 依然不学习）：
+
+| 预设 | 刺激 | 用途 |
+|---|---|---|
+| `escape` 逃避 | 突发威胁（t=120 起恒定强刺激） | 威胁→强反应（PoC 同款） |
+| `sugar` 趋糖 | 渐近奖励（线性爬升后保持） | 靠近奖励源→反应逐步增强 |
+| `startle` 惊跳 | 短时尖峰（仅 5 步强刺激） | 惊吓→快速自衰减反应 |
+| `explore` 探索 | 持续低噪（基线+热噪声） | 无明确威胁→自发探索节律 |
+
+```python
+from fly_instinct import run_preset, list_presets
+
+print(list_presets())   # ['escape', 'explore', 'startle', 'sugar']
+
+# 真实连接组版（需先 fetch-data）
+out = run_preset("escape", edges_path="data/edges.csv",
+                 ann_path="data/annotations.csv", nt_path="data/neurotransmitters.csv")
+reaction = out["reaction"]   # (T,) 反应强度，落在 [-0.5, 1]（负=抑制/冻结，正=激活）
+
+# 替身版（不需要数据，秒级）
+out = run_preset("escape", use_real=False)
+
+# 自定义预设：写一个 JSON（结构同内置），或用完整路径加载
+out = run_preset("my_preset.json")
+```
+
+> 预设输出统一压到 `[-0.5, 1]`：`1`=最强激活，`0`=静息，负值=被抑制（冻结）。要原始信号直接调 `engine.react()`。
+
+---
+
 ## 接入完整版 MaleCNS（1.05 GB）
 
 当前 `data/` 是**真实子集**（约 1 万节点，够跑、够真）。要升级到**完整校对版**（16.67 万神经元 / 2560 万条连接），用官方 **1.05 GB** 连接权重文件：
+
+**一键接入（0.2.0 起内置）**
+
+```bash
+pip install "fly-instinct[full]"                 # 加 pandas+pyarrow（feather 转换）
+python -m fly_instinct get-full --out data_full --to-csv   # 下载 + 转 CSV
+# 或下载+转+直接用 escape 预设跑一次：
+python -m fly_instinct get-full --out data_full --run
+```
+
+代码方式：
+
+```python
+from fly_instinct import from_full
+fly = from_full("data_full/connectome-weights-male-cns-v1.0-minconf-0.5.feather")
+reaction, spikes = fly.react(stimulus)
+```
 
 **下载地址（官方，CC-BY 4.0）**
 - 官方下载页：<https://male-cns.janelia.org/download/>

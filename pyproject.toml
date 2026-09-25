@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fly-instinct"
-version = "0.1.0"
+version = "0.2.0"
 description = "Instinct Engine: a frozen, non-learning 'instinct' signal source driven by a real fruit-fly (MaleCNS) connectome"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -26,6 +26,8 @@ dependencies = [
 
 [project.optional-dependencies]
 demo = ["matplotlib>=3.6"]
+# 完整 1.05GB feather 连接组的一次性转换依赖
+full = ["pandas>=1.5", "pyarrow>=10"]
 
 [project.urls]
 Homepage = "https://github.com/roblitz-spec/fly-instinct"
@@ -33,6 +35,11 @@ Data = "https://male-cns.janelia.org"
 
 [project.scripts]
 fly-instinct-fetch-data = "fly_instinct.datafetch:main"
+fly-instinct-get-full = "fly_instinct.fullconnectome:main"
 
 [tool.setuptools]
 packages = ["fly_instinct"]
+
+# 内置预设 JSON 随包分发
+[tool.setuptools.package-data]
+fly_instinct = ["presets/*.json"]
