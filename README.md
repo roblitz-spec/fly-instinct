@@ -6,7 +6,7 @@
 > 它**不是智能、不是大脑、没有意识、不会学习**。
 
 > 💎 想要**下好、接好、调好**的完整 1.05GB 连接组 + 4 个预调“本能”预设 + 商业授权？
-> → [Gumroad（$6.9）](https://robloxer31.gumroad.com/l/evdto)
+> → [Gumroad（$6.9）](https://robloxer31.gumroad.com/l/Fly-Instinct)
 > （免费层 = 本仓库 + `pip install fly-instinct`，含 25MB 子集 + 全部代码；付费层 = 完整连接组即用包）
 
 ---

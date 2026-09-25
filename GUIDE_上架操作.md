@@ -113,7 +113,7 @@ out = run_preset("escape", edges_path="data/...feather", use_real=True)
 
 - **Pricing**：$6.90 fixed
 - **Visibility**：Public（公开可搜索）
-- **URL slug**：`evdto`（你的产品链接 = `https://robloxer31.gumroad.com/l/evdto`）
+- **URL slug**：`evdto`（你的产品链接 = `https://robloxer31.gumroad.com/l/Fly-Instinct`）
 - 点 **Publish**
 
 ### 收款设置
@@ -131,7 +131,7 @@ out = run_preset("escape", edges_path="data/...feather", use_real=True)
 
 1. **GitHub README.md** 顶部：
    ```markdown
-   > 💎 完整包 → [Gumroad $6.9](https://robloxer31.gumroad.com/l/evdto)
+   > 💎 完整包 → [Gumroad $6.9](https://robloxer31.gumroad.com/l/Fly-Instinct)
    ```
 2. **PyPI 描述**（`pyproject.toml` 的 `description` 或 `readme`）里也加一行
 3. commit + push：
