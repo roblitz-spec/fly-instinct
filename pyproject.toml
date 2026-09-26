@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fly-instinct"
-version = "0.2.4"
+version = "0.2.5"
 description = "Instinct Engine: a frozen, non-learning 'instinct' signal source driven by a real fruit-fly (MaleCNS) connectome"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -32,6 +32,8 @@ full = ["pandas>=1.5", "pyarrow>=10"]
 [project.urls]
 Homepage = "https://github.com/roblitz-spec/fly-instinct"
 Data = "https://male-cns.janelia.org"
+Demo = "https://roblitz-spec.github.io/fly-instinct/"
+"Ready-to-Run Package (Gumroad)" = "https://robloxer31.gumroad.com/l/Fly-Instinct"
 
 [project.scripts]
 fly-instinct-fetch-data = "fly_instinct.datafetch:main"
