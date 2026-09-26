@@ -88,21 +88,24 @@ class FlyInstinct:
         return (self.Wout @ sp.T).ravel()
 
     def react(self, stimulus: np.ndarray, noise: float = 0.0,
-              smooth: int = 1):
+              smooth: int = 1, track_spikes: bool | None = None):
         """
-        对一段刺激序列做“本能反应”。
+        对一段刺激序列做"本能反应"。
 
         参数
         ----
         stimulus : 1D 或 2D 数组，形状 (T,) 或 (T, n_input)
         noise    : 注入的网络内噪声幅度（0=确定性）
         smooth   : 输出滑动平均窗宽（1=不平滑）
+        track_spikes : 是否记录每个神经元的发放矩阵 (n,T)。
+                   None=自动（n*T < 1 亿时记录，否则跳过以节省内存）。
 
         返回
         ----
         reaction : (T,) 反应强度序列（静息基线对齐 0、峰值对齐 1；
                    若网络被抑制到低于静息水平会出现小幅负值）
-        spikes   : (n, T) 每个神经元的发放（0/1），供可视化
+        spikes   : (n, T) 每个神经元的发放（0/1），供可视化；
+                   大网络（track_spikes=False）时返回 None
         """
         stimulus = np.asarray(stimulus, dtype=float)
         if stimulus.ndim == 1:
@@ -110,16 +113,21 @@ class FlyInstinct:
         T = stimulus.shape[0]
         self.reset()
 
+        # 自动判断：n*T 超过 1 亿元素（~800MB float64）就不记录尖峰矩阵
+        if track_spikes is None:
+            track_spikes = (self.n * T) < 100_000_000
+
         # 先测静息读出（零输入，待动力学稳定后取均值），作为反应基线
         for _ in range(max(10, int(self.tau))):
             self.step(np.zeros(self.n_in), noise=0.0)
         resting = float((self.Wout @ self._sp_prev).ravel()[0])
 
         reaction = np.zeros(T)
-        spikes = np.zeros((self.n, T))
+        spikes = np.zeros((self.n, T)) if track_spikes else None
         for t in range(T):
             reaction[t] = self.step(stimulus[t], noise=noise)[0] - resting
-            spikes[:, t] = self._sp_prev
+            if track_spikes:
+                spikes[:, t] = self._sp_prev
 
         if smooth > 1:
             k = min(smooth, T)
@@ -146,11 +154,24 @@ class FlyInstinct:
 
         与替身版接口完全一致：fly.react(stimulus) -> (reaction, spikes)
         """
-        from scipy import sparse
         from .loader import load_malecns
 
         d = load_malecns(edges_path, ann_path, nt_path,
                          spectral_radius=spectral_radius)
+        return cls.from_loaded(d, seed=seed, in_neurons=in_neurons,
+                               tau=tau, dt=dt, v_th=v_th, v_reset=v_reset,
+                               gain=gain, spectral_radius=spectral_radius)
+
+    @classmethod
+    def from_loaded(cls, d: dict, seed=0, in_neurons=800, tau=20.0, dt=1.0,
+                    v_th=1.0, v_reset=0.0, gain=1.0, spectral_radius=0.9):
+        """
+        由 loader 产出的 dict（含 W/n/n_edges/inhibit_frac/sr_raw）组装引擎。
+        与 from_malecns 共享同一套接口与动力学；CSV 子集版与完整 feather 版
+        都走这里，区别只在 dict 来自 load_malecns 还是 load_full_feather。
+        """
+        from scipy import sparse
+
         W = d["W"]
         n = d["n"]
 
@@ -168,8 +189,8 @@ class FlyInstinct:
         rng = np.random.default_rng(seed)
 
         # 输入接口：刺激投到顶层 out-degree 神经元（兴奋驱动）
-        coo = W.tocoo()
-        outdeg = np.bincount(coo.col, minlength=n)
+        # 直接用 CSR 的 indices（列下标）算 out-degree，避免 W.tocoo() 的整份拷贝
+        outdeg = np.bincount(W.indices, minlength=n)
         order = np.lexsort((np.arange(n), -outdeg))  # out-degree 降序，同度按 idx 升序
         top = order[:min(in_neurons, n)]
         in_w = rng.uniform(0.6, 1.2, size=top.size)

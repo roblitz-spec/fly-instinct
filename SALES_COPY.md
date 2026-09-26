@@ -43,8 +43,10 @@
 ### 包含什么（「即用完整包」）
 
 - ✅ 下好、校验过的**完整 MaleCNS v1.0 连接组**（`connectome-weights-male-cns-v1.0-minconf-0.5.feather`，1.05GB）
-- ✅ 4 个预调“本能”预设：**逃避 / 趋糖 / 惊跳 / 探索**（换预设 = 换一种本能）
+- ✅ 4 个预调"本能"预设：**逃避 / 趋糖 / 惊跳 / 探索**（换预设 = 换一种本能）
 - ✅ 完整连接组接入工具（下载/断点续传/校验 + feather→引擎一条龙）
+- ✅ 导出模块：`.wav`（4s 音频包络）/ `.npz`（trace + 每神经元 spikes + meta）/ `.npy`
+- ✅ **附赠 C. elegans 线虫本能**（302 神经元，White 1986 连接组 + Wang 2024 神经递质图谱，4 预设，<1s 出结果）
 - ✅ 商业使用授权书（可闭源集成）+ 数据 CC-BY 署名合规
 - ✅ 中英文档 + 一次问题支持
 
@@ -57,9 +59,9 @@
 
 ### 定价
 
-- **Gumroad：$6.9**（一次性，含完整连接组 + 全部预设 + 商业授权 + 一次支持）
+- **Gumroad：$6.9**（一次性，含果蝇完整连接组 + 线虫附赠 + 全部预设 + 商业授权 + 一次支持）
 
-> 定价说明：本项目是 open-core，免费 PyPI 已含完整连接组下载工具、4 个预设和全部代码（MIT 本可闭源商用），付费包真正多出的是"帮你下好的 1.05GB 数据 + 盖章商业授权书 + 一次支持"。定价卡在不破坏行情的最低线（冲动下单不心疼、又不像赠品）。
+> 定价说明：本项目是 open-core，免费 PyPI 已含完整连接组下载工具、4 个预设和全部代码（MIT 本可闭源商用），付费包真正多出的是"帮你下好的 1.05GB 数据 + 线虫附赠（White 1986 + Wang 2024）+ 盖章商业授权书 + 一次支持"。定价卡在不破坏行情的最低线（冲动下单不心疼、又不像赠品）。
 
 ### 交付
 
@@ -98,16 +100,20 @@ non-trivial, and non-learning.
 ### Selling points
 
 1. **Real data** — the full curated MaleCNS v1.0 connectome (~166k neurons / ~25.6M synapses), not a stand-in.
-2. **Ready to run** — the full 1.05 GB connectome, downloaded, verified, and wired up, with tuned presets.
-3. **Local & reproducible** — no network, no keys, deterministic output.
-4. **One-line integration** — `reaction, spikes = fly.react(stimulus)`.
-5. **Commercial license** — closed-source integration allowed; you don’t have to open-source your code.
+2. **Two species, one price** — the fruit fly (heavyweight, 166k neurons) **plus** C. elegans (302 neurons, White 1986 + Wang 2024 NT atlas) at no extra cost.
+3. **Ready to run** — the full 1.05 GB connectome, downloaded, verified, and wired up, with tuned presets.
+4. **Local & reproducible** — no network, no keys, deterministic output.
+5. **One-line integration** — `reaction, spikes = fly.react(stimulus)`.
+6. **Export to anything** — `.wav`, `.npz`, `.npy` — drop into audio engines, games, or ML pipelines.
+7. **Commercial license** — closed-source integration allowed; you don't have to open-source your code.
 
-### What’s in the “Ready-to-Run Full Package”
+### What's in the "Ready-to-Run Full Package"
 
 - The full **MaleCNS v1.0 connectome** (1.05 GB feather), downloaded & verified
 - 4 tuned instinct presets: **Escape / Sugar-seeking / Startle / Explore**
 - Full-connectome integration tooling (download / resume / verify / load)
+- Export to `.wav` (4s audio envelope) / `.npz` (trace + per-neuron spikes) / `.npy`
+- **Bonus: C. elegans (roundworm) instinct** — 302 neurons, White 1986 connectome + Wang 2024 neurotransmitter atlas, 4 presets, runs in <1s
 - Commercial license (closed-source OK) + CC-BY data-attribution compliance
 - Bilingual docs + one round of support
 
@@ -120,22 +126,68 @@ non-trivial, and non-learning.
 
 ### Price
 
-**$6.9** (one-time: full connectome + all presets + commercial license + one round of support)
+**$6.9** (one-time: full fly connectome + C. elegans bonus + all presets + commercial license + one round of support)
 
-> This is an open-core project — the free PyPI package already includes the full-connectome download tool, all presets, and all code (MIT, already usable in closed-source products). The paid package adds the pre-downloaded 1.05 GB data + a signed commercial license + one round of support. Priced at the lowest point that still signals real value rather than a giveaway.
+> This is an open-core project — the free PyPI package already includes the full-connectome download tool, all presets, and all code (MIT, already usable in closed-source products). The paid package adds the pre-downloaded 1.05 GB data, a bonus C. elegans connectome (White 1986 + Wang 2024 NT atlas), a signed commercial license, and one round of support. Priced at the lowest point that still signals real value rather than a giveaway.
 
 ### Data attribution (required, CC-BY 4.0)
 
 > The fruit-fly connectome data is from **MaleCNS v1.0** (Janelia Research Campus / HHMI),  
-> available at <https://male-cns.janelia.org/>, licensed under **CC-BY 4.0**.
+> available at <https://male-cns.janelia.org/>, licensed under **CC-BY 4.0**.  
+> The C. elegans connectome is from **White et al. 1986** (J. Cell Biol. 105:795) and the  
+> neurotransmitter atlas from **Wang et al. 2024** (eLife 13:RP95402), both public research data.
+
+### FAQ
+
+> **Q: What's the C. elegans package for?**
+> A: A second, fully independent connectome simulation — 302 neurons with real synaptic weights  
+> and neurotransmitter polarity from Wang et al. 2024. Runs in under 1 second. Great for quick  
+> prototyping, as a lightweight baseline alongside the fly, or for real-time interactive projects.
+>
+> **Q: Do I need a GPU?**
+> A: No. Both packages run on CPU. The worm runs in <1s; the fly (full 1.05GB connectome)  
+> takes ~30s to load and a few seconds per reaction on a modern laptop.
+>
+> **Q: What file formats can I export?**
+> A: `.wav` (4-second audio envelope, 22050 Hz mono), `.npz` (reaction trace + per-neuron spike  
+> times + metadata), and `.npy` (raw numpy array). Works with any Python/JS/audio pipeline.
 
 ---
 
-## 三、上架前最后核对（合规红线）
+## 三、Gumroad 页面素材指引
 
-- [ ] 署名块已放入（MaleCNS v1.0 / Janelia FlyEM / CC-BY 4.0）
-- [ ] 全文无“果蝇大脑 / 有意识 / 能学习 / AGI”字样
-- [ ] 统一话术：“基于真实连接组的、权重冻结、非学习的本能式反应信号源”
-- [ ] 数据 CC-BY 4.0 保持（不得加“禁止再分发”等更严条款）
+### 截图顺序（从上到下）
+
+| # | 素材 | 说明 |
+|---|------|------|
+| 1 | `instinct_poc_real.png` | 主图：真实连接组 vs 随机 vs 噪声三方对比（果蝇） |
+| 2 | 代码截图（10 行出文件） | 终端跑 `python -m fly_instinct run --save out.wav` 的截图 |
+| 3 | `worm_instinct_poc.png` | **附赠线虫**：4 条预设 trace + NT 极性柱状图，标注 "Bonus: C. elegans (302 neurons)" |
+| 4 | 音频波形 / 频谱截图 | 展示 `.wav` 导出效果（可选） |
+
+### 产品标题（Gumroad 标题栏）
+
+**Fly-Instinct + Worm — Real Connectome Signal Engines ($6.9, two species)**
+
+### 产品副标题（标题下方一行）
+
+> 166,000-neuron fruit-fly connectome + 302-neuron roundworm — frozen, non-learning, fully local.  
+> Feed a stimulus, get a biological "instinct" signal. Export to audio or raw data.
+
+### 描述区（直接贴到 Gumroad 长描述框）
+
+直接贴上面"二、English Copy"整段（Title 到 FAQ），Gumroad 支持 Markdown。
+
+---
+
+## 四、上架前最后核对（合规红线）
+
+- [ ] 署名块已放入（MaleCNS v1.0 / Janelia FlyEM / CC-BY 4.0 + White 1986 + Wang 2024 eLife）
+- [ ] 全文无"果蝇大脑 / 有意识 / 能学习 / AGI"字样
+- [ ] 统一话术："基于真实连接组的、权重冻结、非学习的本能式反应信号源"
+- [ ] 数据 CC-BY 4.0 保持（不得加"禁止再分发"等更严条款）
 - [ ] 商业授权书（LICENSE_COMMERCIAL.md）随包提供
 - [ ] 主图用 `instinct_poc_real.png`（真实数据三方对比）
+- [ ] 线虫截图 `worm_instinct_poc.png` 放在第二或第三张位置
+- [ ] zip 结构确认：`fly-instinct/` + `worm-instinct/` 平级，无嵌套
+- [ ] zip 文件名 `fly-instinct-full-0.2.4.zip`

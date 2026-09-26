@@ -26,8 +26,9 @@ from .datafetch import fetch_data, DATA_URLS, EXPECTED_SIZES
 from .presets import list_presets, load_preset, make_stimulus, run_preset
 from .fullconnectome import (from_full, download_full, feather_to_csv,
                              FULL_URLS, FEATHER_NAME)
+from .export import save_reaction, render, to_wav, to_npz
 
-__version__ = "0.2.2"
+__version__ = "0.2.4"
 __all__ = [
     "FlyInstinct", "load_malecns", "fetch_data",
     "DATA_URLS", "EXPECTED_SIZES",
@@ -36,5 +37,7 @@ __all__ = [
     # 完整连接组（~1.05GB）接入
     "from_full", "download_full", "feather_to_csv",
     "FULL_URLS", "FEATHER_NAME",
+    # 导出（wav/npz/npy，零额外依赖）
+    "save_reaction", "render", "to_wav", "to_npz",
     "__version__",
 ]

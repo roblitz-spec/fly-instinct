@@ -1,17 +1,17 @@
 # 发布操作清单（逐步版）
 
-> 定位：**MIT 开源 + open-core 收费**。免费层（GitHub/PyPI）是流量入口和信任状；收费层（Gumroad）卖"下好调好的即用包 + 商业授权 + 持续更新"。
+> 定位：**MIT 开源 + open-core 收费**。免费层（GitHub/PyPI）是流量入口和信任状；收费层（Gumroad）卖"下好调好的即用包 + 商业授权 + 持续更新"。  
 > 本清单按顺序执行，每一步都有具体命令。预计手动操作总耗时约 40 分钟（不含内容创作）。
 
 ---
 
 ## 第 0 步：准备账号与工具
 
-| 账号 | 网址 | 用途 |
-|---|---|---|
-| GitHub | https://github.com/signup | 代码主仓库（信任状） |
-| PyPI | https://pypi.org/account/register/ | `pip install fly-instinct` 入口 |
-| Gumroad | https://gumroad.com | 收费渠道（直链 10%+$0.50，平台代扣销售税） |
+| 账号      | 网址                                   | 用途                            |
+| ------- | ------------------------------------ | ----------------------------- |
+| GitHub  | <https://github.com/signup>          | 代码主仓库（信任状）                    |
+| PyPI    | <https://pypi.org/account/register/> | `pip install fly-instinct` 入口 |
+| Gumroad | <https://gumroad.com>                | 收费渠道（直链 10%+$0.50，平台代扣销售税）    |
 
 本机工具：
 
@@ -122,7 +122,7 @@ python examples/poc_real.py   # 需要把 examples 从仓库拷一份，或直�
 
 ## 第 6 步：合规红线（每次发东西前扫一眼）
 
-- [ ] 署名：MaleCNS v1.0, Janelia FlyEM, https://male-cns.janelia.org, CC-BY-4.0（LICENSE.md 里有现成块）
+- [ ] 署名：MaleCNS v1.0, Janelia FlyEM, <https://male-cns.janelia.org>, CC-BY-4.0（LICENSE.md 里有现成块）
 - [ ] 不夸大：只说"基于真实连接组的本能式反应源"，**不说**"果蝇大脑/有意识/能学习/AGI"
 - [ ] 数据不独占：CC-BY 数据别人也能用，你卖的是工程 + 配置 + 授权
 - [ ] 代码 MIT：付费包里的代码部分同样保持 MIT，收费点是数据整理 + 商业授权，不是代码本身

@@ -104,6 +104,124 @@ def download_full(out_dir: str, url: str = FULL_URLS["edges"],
     return dest
 
 
+def _find_col(columns, *keys, exclude=()):
+    """按子串找列名（小写匹配），优先精确命中。"""
+    cols = list(columns)
+    for c in cols:
+        if c in keys:
+            return c
+    for k in keys:
+        for c in cols:
+            lc = c.lower()
+            if k in lc and not any(x in lc for x in exclude):
+                return c
+    return None
+
+
+def load_full_feather(edges_feather: str, nt_feather: str | None = None,
+                      ann_feather: str | None = None,
+                      spectral_radius: float = 0.9, seed: int = 7) -> dict:
+    """
+    内存高效地加载【完整】feather 连接组，直接建稀疏矩阵 W[post,pre]。
+
+    与 load_malecns（CSV、逐行、会堆全部行进 list）不同：本函数用 pyarrow
+    直接把整列读成 numpy，用 searchsorted 向量化做 id->idx 映射，**不落地 CSV、
+    不逐行 append**，因此能扛住完整版 1.5 亿条边而不爆内存。
+
+    返回 dict 与 load_malecns 兼容：
+      W(稀疏 CSR, post x pre, 带符号已缩放), n, n_edges, node_ids, id2idx,
+      inhibit_frac, sr_raw, sr_target, cell_type
+    """
+    import numpy as np
+    from scipy import sparse
+    import pyarrow.feather as pf
+    from .loader import _spectral_radius
+
+    INHIBIT = {"gaba", "glycine"}
+
+    # 1) 边表：body_pre / body_post / weight（int32 节点 + float32 权重，省一半内存）
+    te = pf.read_table(edges_feather)
+    pre_c = _find_col(te.column_names, "body_pre", "pre", exclude=["post"])
+    post_c = _find_col(te.column_names, "body_post", "post", exclude=["pre"])
+    w_c = _find_col(te.column_names, "weight")
+    if not (pre_c and post_c and w_c):
+        raise ValueError(f"edges feather 列无法识别: {te.column_names}")
+    n_edges = int(te.num_rows)
+    pre = te.column(pre_c).to_numpy(zero_copy_only=False).astype(np.int32)
+    post = te.column(post_c).to_numpy(zero_copy_only=False).astype(np.int32)
+    w = te.column(w_c).to_numpy(zero_copy_only=False).astype(np.float32)
+    del te  # 立刻放掉 pyarrow 原始缓冲
+
+    # 2) 节点 ID -> idx（只取边上出现过的神经元；np.unique 已排序，int32）
+    ids = np.unique(np.concatenate([pre, post]))
+    n = int(ids.shape[0])
+    pre_idx = np.searchsorted(ids, pre).astype(np.int32)
+    post_idx = np.searchsorted(ids, post).astype(np.int32)
+    del pre, post
+
+    # 3) 每个（突触前）神经元的符号（默认兴奋，递质命中抑制则 -1）
+    sign = np.ones(n, dtype=np.float32)
+    if nt_feather and os.path.exists(nt_feather):
+        tn = pf.read_table(nt_feather)
+        body_c = _find_col(tn.column_names, "body", exclude=["bodyid"])
+        nt_c = _find_col(tn.column_names, "consensus_nt", "predicted_nt", "nt")
+        if body_c and nt_c:
+            body_arr = tn.column(body_c).to_numpy(zero_copy_only=False).astype(np.int32)
+            nt_vals = (tn.column(nt_c).to_pandas().astype(str)
+                       .str.strip().str.lower().values)
+            inh_bodies = body_arr[np.isin(nt_vals, list(INHIBIT))]
+            inh_idx = np.searchsorted(ids, inh_bodies)
+            valid = (inh_idx < n) & (ids[inh_idx] == inh_bodies)
+            sign[inh_idx[valid]] = -1.0
+        del tn
+
+    # 4) 组装 W[post,pre]（符号乘在突触前神经元上），尽早释放中间数组
+    data = (w * sign[pre_idx]).astype(np.float32, copy=False)
+    del w
+    W = sparse.csr_matrix((data, (post_idx, pre_idx)), shape=(n, n))
+    del data, pre_idx, post_idx
+    W.sum_duplicates()
+
+    # 5) 谱半径归一到临界点附近
+    sr_raw = _spectral_radius(W, seed=seed)
+    if sr_raw > 0:
+        W = W * (spectral_radius / sr_raw)
+
+    inhibit_frac = float((sign < 0).mean())
+    del sign
+
+    # 6) 细胞类型注释（可选；整表 ~14MB/21 万行）
+    cell_type = {}
+    if ann_feather and os.path.exists(ann_feather):
+        ta = pf.read_table(ann_feather)
+        aid_c = _find_col(ta.column_names, "bodyid", "body_id", "root_id")
+        typ_c = _find_col(ta.column_names, "type")
+        sup_c = _find_col(ta.column_names, "superclass")
+        if aid_c:
+            aids = ta.column(aid_c).to_numpy(zero_copy_only=False).astype(np.int32)
+            types = (ta.column(typ_c).to_pandas().astype(str).values
+                     if typ_c else np.array([""] * ta.num_rows))
+            sups = (ta.column(sup_c).to_pandas().astype(str).values
+                    if sup_c else np.array([""] * ta.num_rows))
+            id2idx = {int(i): k for k, i in enumerate(ids)}
+            for i in range(ta.num_rows):
+                idx = id2idx.get(int(aids[i]))
+                if idx is not None:
+                    cell_type[idx] = (str(types[i]), str(sups[i]))
+        del ta
+
+    return {
+        "W": W,
+        "n": n,
+        "n_edges": n_edges,
+        "node_ids": [int(i) for i in ids],
+        "inhibit_frac": inhibit_frac,
+        "sr_raw": sr_raw,
+        "sr_target": spectral_radius,
+        "cell_type": cell_type,
+    }
+
+
 def feather_to_csv(feather_path: str, csv_path: str) -> tuple:
     """
     把 .feather 连接组转成 CSV（列 pre,post,weight）。需要 pandas(+pyarrow)。
@@ -139,25 +257,13 @@ def from_full(feather_path: str, ann_feather: str | None = None,
 
     if not os.path.exists(feather_path):
         raise FileNotFoundError(f"找不到 feather: {feather_path}")
-    out_dir = out_dir or os.path.dirname(os.path.abspath(feather_path))
-    os.makedirs(out_dir, exist_ok=True)
 
-    def _to_csv(fe, name):
-        if not fe or not os.path.exists(fe):
-            return None
-        csv = os.path.join(out_dir, name)
-        if not os.path.exists(csv):
-            feather_to_csv(fe, csv)
-        return csv
-
-    edges_csv = _to_csv(feather_path, "full_edges.csv")
-    ann_csv = _to_csv(ann_feather, "full_annotations.csv")
-    nt_csv = _to_csv(nt_feather, "full_neurotransmitters.csv")
-
-    return FlyInstinct.from_malecns(
-        edges_csv, ann_path=ann_csv, nt_path=nt_csv,
-        seed=seed, in_neurons=in_neurons,
-        gain=gain, spectral_radius=spectral_radius)
+    # 直接 feather -> 稀疏矩阵（内存高效，不落 CSV、不堆 list）
+    d = load_full_feather(feather_path, nt_feather=nt_feather,
+                          ann_feather=ann_feather,
+                          spectral_radius=spectral_radius, seed=seed)
+    return FlyInstinct.from_loaded(d, seed=seed, in_neurons=in_neurons,
+                                   gain=gain, spectral_radius=spectral_radius)
 
 
 def main(argv=None):

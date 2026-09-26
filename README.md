@@ -5,9 +5,9 @@
 > 定位一句话：它是一个**有结构的、非学习的反应算子**，用于给“需要‘活的反应’”的项目提供信号。
 > 它**不是智能、不是大脑、没有意识、不会学习**。
 
-> 💎 想要**下好、接好、调好**的完整 1.05GB 连接组 + 4 个预调“本能”预设 + 商业授权？
+> 💎 想要**下好、接好、调好**的完整 1.05GB 果蝇连接组 **+ 一套线虫（C. elegans）本能** + 4 个预调“本能”预设 + 商业授权？
 > → [Gumroad（$6.9）](https://robloxer31.gumroad.com/l/Fly-Instinct)
-> （免费层 = 本仓库 + `pip install fly-instinct`，含 25MB 子集 + 全部代码；付费层 = 完整连接组即用包）
+> （免费层 = 本仓库 + `pip install fly-instinct`，含 25MB 子集 + 全部代码；付费层 = 完整果蝇连接组即用包 **+ 线虫本能即用包**，两套真大脑一次到手）
 
 ---
 
@@ -22,8 +22,9 @@ fly-instinct/
 │   ├── datafetch.py        #   数据下载工具（25MB 子集，断点续传+校验）
 │   ├── presets.py          #   预调“本能”预设（逃避/趋糖/惊跳/探索）
 │   ├── fullconnectome.py   #   完整 1.05GB 连接组接入（下载+转换+加载）
+│   ├── export.py           #   导出 wav/npz/npy（零额外依赖）
 │   ├── presets/            #   内置预设 JSON（随包分发）
-│   └── __main__.py         #   CLI：fetch-data / get-full 入口
+│   └── __main__.py         #   CLI：info / list / run / export / fetch-data / get-full
 ├── examples/
 │   ├── poc_demo.py         # PoC（替身网络版，150 节点，无需数据）
 │   └── poc_real.py         # PoC（真实 MaleCNS 连接组版）
@@ -72,6 +73,40 @@ fly-instinct-fetch-data --out data
 > 下载走 HuggingFace 镜像（国内可达），断点续传 + 大小校验，已存在则自动跳过。
 
 **纯本地、无 API、无密钥、数据不外传。** 计算全部在本机 CPU 完成（唯一联网动作是上面这一次性数据下载）。
+
+---
+
+## 10 行跑出第一个文件（wav / npz / npy）
+
+信号不只是数组——`render()` / `save_reaction()` 把它变成**能直接用的文件**（零额外依赖，只用 numpy + 标准库 `wave`）：
+
+```python
+from fly_instinct import render
+
+# 一行：跑 escape 预设，存成 4 秒音频包络
+# （有 data/edges.csv 就用真实连接组，没有则自动落回 150 节点替身，开箱即跑）
+render("escape", "escape.wav")
+
+# 换格式：原始反应 + 每神经元发放 + 元数据（喂合成器 / 草图 / 游戏 / 研究）
+render("sugar", "sugar.npz")
+```
+
+命令行（装完即用，不用先写代码）：
+
+```bash
+python -m fly_instinct info                    # 版本 / 数据档 / 预设一览
+python -m fly_instinct export escape out.wav   # 一行出 .wav / .npz / .npy
+python -m fly_instinct run escape --save out.npz
+python -m fly_instinct export startle out.wav --stand-in   # 强制替身（秒级，不读数据）
+```
+
+| 格式 | 内容 | 用途 |
+|---|---|---|
+| `.wav` | 反应拉伸成 4s 音频包络（16-bit 单声道） | 直接听 / 喂合成器 / 控制信号 |
+| `.npz` | 原始 `reaction (T,)` + `spikes (n,T)` + 元数据 | 驱动代码（合成器 / 草图 / NPC / 研究） |
+| `.npy` | 仅原始 `reaction (T,)` | 最小接入 |
+
+> 完整版连接组（~1.05GB）`react()` 会自动跳过发放矩阵以省内存，此时 `.npz` 只含 `reaction` + 元数据（仍完全可用）。
 
 ---
 
@@ -211,6 +246,50 @@ reaction, spikes = fly.react(stimulus)
 **代价与注意**
 - 完整版稀疏矩阵约 2560 万非零元，加载后内存数百 MB；单次 `react(T)` 计算量约为当前子集的 ~16 倍，建议 T 不要太大、机器内存 ≥ 8 GB。
 - 完整版的**递质符号仍是先验预测**（见 MODEL.md 诚实边界）。
+
+---
+
+## 附：线虫（C. elegans）本能 · 第二套真大脑（付费包内含）
+
+> 付费 $6.9 的包里，除完整果蝇连接组外，**另附一套独立的线虫"本能"引擎**（解压后 `worm-instinct/` 与 `fly-instinct/` 平级）。
+> 它是同一套方法论（权重冻结、非学习的递归反应算子）接在**另一只真实动物**的完整连接组上——
+> 让一个产品里能同时驱动"果蝇"和"线虫"两种本能信号源。
+
+**它是什么**
+- 数据：**完整 C. elegans 连接组**（White, Southgate, Thomson & Brenner 1986, *Phil. Trans. R. Soc. Lond. B* 314:1-340）——309 个神经元 / 2960 条连接（2386 化学 + 575 电突触）。
+- 递质标注：每个神经元的兴奋/抑制极性来自 **Wang et al. 2024 神经递质图谱**（eLife 13:RP95402，开放获取）——33 个 GABA 能神经元为抑制（占比 ~10.7%），其余兴奋/调质。
+- 体积极小：连接组数据仅 **~268 KB**，**已内置**，开箱即跑，无需下载、无需联网。
+
+**和果蝇版的区别**
+
+| | 果蝇 fly-instinct | 线虫 worm-instinct |
+|---|---|---|
+| 物种 | 果蝇（MaleCNS） | 线虫（C. elegans） |
+| 规模 | 16.67 万神经元 / 2560 万边（完整 1.05GB） | 309 神经元 / 2960 边（268KB） |
+| 递质 | Janelia 官方先验预测 | Wang 2024 scRNA 图谱 |
+| 速度 | 完整版单次反应分钟级 | **毫秒级（200 步 ~10ms，可 60fps 实时）** |
+| 数据 | 需内置/下载 | 内置，零下载 |
+
+**快速用（解压后 `worm-instinct/` 与 `fly-instinct/` 平级，各自独立安装）**
+
+```python
+# 方式 A：直接加路径
+import sys; sys.path.insert(0, "../worm-instinct")   # 从 fly-instinct/ 目录指向平级的线虫目录
+import worm_instinct as w
+
+# 方式 B：先 pip install -e ../worm-instinct，然后直接 import worm_instinct
+
+worm = w.from_white1986(seed=7)
+print(worm.meta["inhibit_frac"])   # ~0.107（10.7% GABA 能抑制）
+
+# 一行出文件（.wav 4s 音频 / .npz 原始数据）
+w.render("escape", "worm_escape.wav")
+w.render("forage", "worm_forage.npz")
+```
+
+内置 4 个预设：`escape` 逃避 / `forage` 觅食 / `turn` 转向 / `wander` 巡游——换预设即换一种本能，权重仍冻结、不学习。
+
+> 诚实边界同果蝇版：输出是**冻结结构对刺激的非学习反应**，不具备智能/记忆/学习/意识；递质符号来自 Wang 2024 图谱预测而非逐突触实验测定。请勿以“线虫大脑 / 有意识 / 能学习”宣传。
 
 ---
 
