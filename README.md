@@ -9,6 +9,9 @@
 > → [Gumroad（$6.9）](https://robloxer31.gumroad.com/l/Fly-Instinct)
 > （免费层 = 本仓库 + `pip install fly-instinct`，含 25MB 子集 + 全部代码；付费层 = 完整果蝇连接组即用包 **+ 线虫本能即用包**，两套真大脑一次到手）
 
+> 🌐 **不想装任何东西？** 直接开浏览器跑线虫：<https://roblitz-spec.github.io/fly-instinct/>
+> 真实 C. elegans 连接组（309 神经元，White 1986 + Wang 2024 递质极性）在 Pyodide/WASM 里跑 4 种本能，能看 trace、能听音频。整个大脑 + 代码 192KB，页面打开即跑。
+
 ---
 
 ## 文件结构
@@ -37,10 +40,7 @@ fly-instinct/
 ├── README.md               # 本文件（操作文档）
 ├── MODEL.md                # 模型说明（架构/数据出处/完整连接组接入）
 ├── LICENSE.md              # 许可与署名（数据 CC-BY 4.0 + 代码 MIT）
-├── LICENSE_COMMERCIAL.md   # 商业使用授权书（随付费完整包提供）
-├── SALES_COPY.md           # 上架文案（Gumroad/知乎/公众号）
-├── PUBLISH.md              # 发布清单（署名/合规/商用边界）
-└── PUBLISH_STEPS.md        # 逐步发布操作（GitHub/PyPI/收费渠道/内容）
+└── LICENSE_COMMERCIAL.md   # 商业使用授权书（随付费完整包提供）
 ```
 
 ---
