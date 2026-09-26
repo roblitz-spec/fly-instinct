@@ -3,7 +3,10 @@
 **fly-instinct「即用完整包」商业授权**
 
 本授权书随 **fly-instinct「即用完整包」**（下称“本包”）一并提供。购买/获得本包即视为接受本授权。
-本包 = 下好并校验过的**完整 MaleCNS v1.0 连接组** + **预调“本能”预设** + **接入工具与文档** + 本商业授权。
+本包 = 下好并校验过的**完整 MaleCNS v1.0 连接组** + **预调“本能”预设** + **接入工具与文档**
++ **附赠 C. elegans 线虫“本能”完整包**（302 神经元，White 1986 连接组 + Wang 2024 递质图谱，见包内 `worm-instinct/`）
++ 本商业授权。线虫部分随附独立的线虫商业授权（`worm-instinct/LICENSE_COMMERCIAL.md`），
+**购买本包即同时获得两套授权：两个物种，一个价格，一份授权。**
 
 > 本授权不构成法律意见。正式大规模商用前建议做一次合规审查。
 
@@ -68,8 +71,8 @@
 ## 六、关于代码（About the Code）
 
 本包中的 `fly_instinct` 引擎代码本身遵循 **MIT**（署名 roblitz）——MIT 本就允许闭源商用。
-本商业授权的价值在于：**下好、接好、调好的完整连接组 + 预调配置 + 商业授权与署名合规 + 支持**，
-而不是代码本身的稀缺。
+本商业授权的价值在于：**下好、接好、调好的完整连接组 + 预调配置 + 附赠的线虫完整包
++ 商业授权与署名合规 + 支持**，而不是代码本身的稀缺。
 
 ---
 
@@ -78,7 +81,9 @@
 **fly-instinct “Ready-to-Run Full Package” — Commercial License**
 
 By purchasing or receiving this package (the full MaleCNS v1.0 connectome +
-tuned “instinct” presets + integration tooling & docs + this license), you may:
+tuned “instinct” presets + integration tooling & docs + **bonus: the complete
+C. elegans “instinct” package** (302 neurons, White 1986 + Wang 2024, see
+`worm-instinct/` inside) + this license), you may:
 
 1. **Commercial use** — integrate it into commercial products, plugins, SaaS, games,
    installations, and content, and charge for them.
@@ -110,7 +115,9 @@ direct, indirect, or consequential damages.
 
 The `fly_instinct` engine code is **MIT** (roblitz), which already permits closed-source
 commercial use. The value here is the **ready, integrated, tuned full connectome + presets +
-commercial license/attribution compliance + support** — not the scarcity of the code.
+the complete bonus C. elegans package + commercial license/attribution compliance + support** —
+not the scarcity of the code. The C. elegans part carries its own license
+(`worm-instinct/LICENSE_COMMERCIAL.md`): **two species, one price, one license set.**
 
 ---
 
