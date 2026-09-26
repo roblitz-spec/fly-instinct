@@ -28,7 +28,7 @@ from .fullconnectome import (from_full, download_full, feather_to_csv,
                              FULL_URLS, FEATHER_NAME)
 from .export import save_reaction, render, to_wav, to_npz
 
-__version__ = "0.2.4"
+__version__ = "0.2.5"
 __all__ = [
     "FlyInstinct", "load_malecns", "fetch_data",
     "DATA_URLS", "EXPECTED_SIZES",
